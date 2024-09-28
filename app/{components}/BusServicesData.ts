@@ -95,7 +95,8 @@ const busServicesData: BusServicesData = {
       "route_number": 8,
       "areas_covered": [
         "NAF VALLEY",
-        "MAMBILLA BARRACKS"
+        "MAMBILLA BARRACKS",
+        "ASOKORO 2"
       ],
       "round_trip_price": 260700,
       "one_way_price": 230700
