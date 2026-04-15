@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Service Fee Calculator</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            /* Uses the same custom gradient from your Next.js page */
+            background: linear-gradient(180deg, rgba(99,182,125,0.3) 6%, rgba(255,255,255,1) 26%, rgba(255,255,255,0.6) 79%, rgba(99,182,125,0.3) 98%);
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen p-6 font-sans">
+    
+    <main class="flex flex-col items-center w-full max-w-2xl bg-white/80 p-8 rounded-xl shadow-xl backdrop-blur-sm">
+        <h1 class="text-2xl font-bold mb-6 text-center text-gray-800">Bus Service Fee Calculator</h1>
+        
+        <form id="calculator-form" class="flex flex-col gap-5 w-full text-sm font-mono text-gray-700">
+            <!-- Route Selection -->
+            <div class="flex flex-col gap-1">
+                <label for="route" class="text-base font-semibold">Select Route:</label>
+                <select id="route" required class="w-full border-2 border-gray-300 rounded-sm h-10 px-2 bg-white focus:outline-none focus:border-lime-500">
+                    <option value="" disabled selected>Select a route</option>
+                    <!-- Options populated by Javascript -->
+                </select>
+            </div>
+
+            <div class="flex gap-4 justify-between">
+                <!-- Number of Pupils -->
+                <div class="flex flex-col gap-1 w-full">
+                    <label for="pupils" class="text-base font-semibold">No of Pupil</label>
+                    <input type="number" id="pupils" value="1" min="1" required class="w-full border-2 border-gray-300 rounded-sm h-10 px-2 focus:outline-none focus:border-lime-500" />
+                </div>
+
+                <!-- Trip Type -->
+                <div class="flex flex-col gap-1 w-full">
+                    <label for="trip-type" class="text-base font-semibold">Trip Type:</label>
+                    <select id="trip-type" class="w-full border-2 border-gray-300 rounded-sm h-10 px-2 bg-white focus:outline-none focus:border-lime-500">
+                        <option value="roundTrip">Round Trip</option>
+                        <option value="oneWay">One Way</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="mt-2">
+                <button type="submit" class="w-full border-2 border-transparent rounded-sm h-12 px-2 bg-lime-400 hover:bg-lime-500 text-base font-bold transition-colors">
+                    Calculate Total Fees
+                </button>
+            </div>
+        </form>
+
+        <!-- Results Display -->
+        <div id="result-container" class="hidden text-xl font-bold flex justify-between gap-4 w-full mt-8 p-4 bg-lime-100 rounded-lg text-gray-800 border-l-4 border-lime-500">
+            <h2 class="w-full">Total Bus Fees:</h2>
+            <p id="total-fees" class="w-full text-right text-lime-700">₦0</p>
+        </div>
+
+        <!-- Footer -->
+        <p class="mt-8 text-xs font-bold text-gray-500">
+            Designed and coded by 
+            <a href="https://agboola-portfolio.vercel.app/" class="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">Agboola</a>
+        </p>
+    </main>
+
+    <script>
+        // Data injected from BusServicesData.ts
+        const busServicesData = {
+          bus_routes: [
+            {
+              route_number: 1,
+              areas_covered: ["GWARIMPA", "CITEC/JABI", "LIFECAMP"],
+              round_trip_price: 462150,
+              one_way_price: 432150
+            },
+            {
+              route_number: 2,
+              areas_covered: ["LOKOGOMA", "SUNNY VILLE"],
+              round_trip_price: 462150,
+              one_way_price: 432150
+            },
+            {
+              route_number: 3,
+              areas_covered: ["GAMES VILLAGE", "WONDERLAND", "SUNCITY", "GALADIMAWA"],
+              round_trip_price: 431340,
+              one_way_price: 401340
+            },
+            {
+              route_number: 4,
+              areas_covered: ["APO ZONE E", "APO RESETTLEMENT", "APO NEPA"],
+              round_trip_price: 400530,
+              one_way_price: 370530
+            },
+            {
+              route_number: 5,
+              areas_covered: ["WUYE", "ZONE E"],
+              round_trip_price: 400530,
+              one_way_price: 370530
+            },
+            {
+              route_number: 6,
+              areas_covered: ["GADUWA", "PRINCE & PRINCESS"],
+              round_trip_price: 369720,
+              one_way_price: 339720
+            },
+            {
+              route_number: 7,
+              areas_covered: ["MAITAMA", "WUSE 2", "BERGER", "GARKI", "CBN", "AREA 1", "ASO VILLA"],
+              round_trip_price: 369720,
+              one_way_price: 339720
+            },
+            {
+              route_number: 8,
+              areas_covered: ["NAF VALLEY", "MAMBILLA BARRACKS", "ASOKORO 2"],
+              round_trip_price: 338910,
+              one_way_price: 308910
+            },
+            {
+              route_number: 9,
+              areas_covered: ["ASOKORO 1", "GUZAPE"],
+              round_trip_price: 308100,
+              one_way_price: 278100
+            },
+            {
+              route_number: 10,
+              areas_covered: ["School Environs", "T.Y Danjuma", "Linda Chalker", "IOM", "KPADUMA 1"],
+              round_trip_price: 277290,
+              one_way_price: 247290
+            }
+          ],
+          discount: {
+            "2_children": { round_trip_discount: 70000, one_way_discount: 50000 },
+            "3_children": { round_trip_discount: 100000, one_way_discount: 70000 },
+            "4_children": { round_trip_discount: 140000, one_way_discount: 100000 },
+            "5_children": { round_trip_discount: 170000, one_way_discount: 140000 }
+          }
+        };
+
+        // Populate the select options dynamically
+        const routeSelect = document.getElementById('route');
+        busServicesData.bus_routes.forEach(route => {
+            const option = document.createElement('option');
+            option.value = route.route_number;
+            option.textContent = `Route ${route.route_number} (${route.areas_covered.join(', ')})`;
+            routeSelect.appendChild(option);
+        });
+
+        // Form submission handler
+        document.getElementById('calculator-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const selectedRoute = parseInt(document.getElementById('route').value);
+            const numberOfChildren = parseInt(document.getElementById('pupils').value);
+            const tripType = document.getElementById('trip-type').value;
+
+            // Find the route
+            const route = busServicesData.bus_routes.find(r => r.route_number === selectedRoute);
+            if (!route) return;
+
+            // Calculate base fee based on trip type
+            let baseFee = tripType === 'roundTrip' ? route.round_trip_price : route.one_way_price;
+            
+            // Calculate total for children
+            let totalFees = baseFee * numberOfChildren;
+
+            // Check and apply discount if matching number of children exists
+            const discountKey = `${numberOfChildren}_children`;
+            if (busServicesData.discount.hasOwnProperty(discountKey)) {
+                const discount = busServicesData.discount[discountKey];
+                totalFees -= (tripType === 'roundTrip') ? discount.round_trip_discount : discount.one_way_discount;
+            }
+
+            // Apply formatting for rendering
+            const formattedTotal = totalFees.toLocaleString('en-NG');
+
+            // Show result
+            document.getElementById('total-fees').textContent = '₦' + formattedTotal;
+            document.getElementById('result-container').classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>
