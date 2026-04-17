@@ -32,7 +32,7 @@ export default function Home() {
 
         <div className="mb-8">
           <h1 className="text-2xl font-semibold tracking-tight text-slate-800 mb-1">Bus fare calculator</h1>
-          <p className="text-sm text-slate-500 font-medium">Find the right plan for your children's commute.</p>
+          <p className="text-sm text-slate-500 font-medium">Find the right plan for your children&apos;s commute.</p>
         </div>
 
         <BusServiceForm />

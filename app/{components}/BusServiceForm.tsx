@@ -39,7 +39,6 @@ const BusServiceForm: React.FC = () => {
 
     const discountKey = `${numberOfChildren}_children`;
     if (Object.prototype.hasOwnProperty.call(busServicesData.discount, discountKey)) {
-      // @ts-ignore
       const discount = busServicesData.discount[discountKey];
       totalFeesForChildren -= tripType === 'roundTrip' ? discount.round_trip_discount : discount.one_way_discount;
       discounted = true;
