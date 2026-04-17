@@ -91,7 +91,7 @@ const BusServiceForm: React.FC = () => {
         {/* Custom Route Dropdown */}
         <div className="flex flex-col gap-2 relative" ref={routeContainerRef}>
           <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
-            <Icon icon="solar:routing-2-linear" style={{ strokeWidth: 1.5 }} className="text-slate-400" />
+            <Icon icon="solar:routing-2-linear" style={{ strokeWidth: 1.5 }} className="text-teal-900" />
             Where do you live?
           </label>
           <button 
@@ -129,7 +129,7 @@ const BusServiceForm: React.FC = () => {
           {/* Pupils Counter */}
           <div className="flex flex-col gap-2">
             <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
-              <Icon icon="solar:users-group-rounded-linear" style={{ strokeWidth: 1.5 }} className="text-slate-400" />
+              <Icon icon="solar:users-group-rounded-linear" style={{ strokeWidth: 1.5 }} className="text-teal-900" />
               Children
             </label>
             <div className="h-14 flex items-center justify-between p-1 ring-1 ring-slate-200 rounded-2xl bg-slate-50">
@@ -155,7 +155,7 @@ const BusServiceForm: React.FC = () => {
           {/* Custom Trip Type Toggle */}
           <div className="flex flex-col gap-2">
             <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
-              <Icon icon="solar:transfer-horizontal-linear" style={{ strokeWidth: 1.5 }} className="text-slate-400" />
+              <Icon icon="solar:transfer-horizontal-linear" style={{ strokeWidth: 1.5 }} className="text-teal-900" />
               Trip type
             </label>
             <div className="h-14 flex p-1 bg-slate-50 rounded-2xl ring-1 ring-slate-200 relative">
